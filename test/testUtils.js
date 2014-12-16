@@ -31,11 +31,12 @@ var utils = module.exports = {
         // Override each _request method so we can make the params
         // avaialable to consuming tests (revealing requests made on
         // REQUESTS and LAST_REQUEST):
-        stripeInstance[i]._request = function(method, url, data, auth, cb) {
+        stripeInstance[i]._request = function(method, url, data, auth, headers, cb) {
           var req = stripeInstance.LAST_REQUEST = {
             method: method,
             url: url,
-            data: data
+            data: data,
+            headers: headers,
           };
           if (auth) req.auth = auth;
           stripeInstance.REQUESTS.push(req);

@@ -16,6 +16,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'GET',
         url: '/v1/customers/cus_2dkAb792h1mfa4',
+        headers: {},
         data: {}
       });
 
@@ -27,6 +28,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'GET',
         url: '/v1/customers/cus_2dkAb792h1mfa4',
+        headers: {},
         data: {},
         auth: TEST_AUTH_KEY
       });
@@ -43,6 +45,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'POST',
         url: '/v1/customers',
+        headers: {},
         data: { description: 'Some customer' }
       });
 
@@ -54,11 +57,78 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'POST',
         url: '/v1/customers',
+        headers: {},
         data: { description: 'Some customer' },
         auth: TEST_AUTH_KEY
       });
 
     });
+
+    it('Sends the correct request [with specified auth and no body]', function() {
+
+      stripe.customers.create(TEST_AUTH_KEY);
+      expect(stripe.LAST_REQUEST).to.deep.equal({
+        method: 'POST',
+        url: '/v1/customers',
+        headers: {},
+        data: {},
+        auth: TEST_AUTH_KEY
+      });
+
+    });
+
+    it('Sends the correct request [with specified idempotency_key in options]', function() {
+
+      stripe.customers.create({ description: 'Some customer' }, { idempotency_key: 'foo' });
+      expect(stripe.LAST_REQUEST).to.deep.equal({
+        method: 'POST',
+        url: '/v1/customers',
+        headers: {'Idempotency-Key': 'foo'},
+        data: { description: 'Some customer' },
+      });
+
+    });
+
+    it('Sends the correct request [with specified auth in options]', function() {
+
+      stripe.customers.create({ description: 'Some customer' }, { api_key: TEST_AUTH_KEY });
+      expect(stripe.LAST_REQUEST).to.deep.equal({
+        method: 'POST',
+        url: '/v1/customers',
+        headers: {},
+        data: { description: 'Some customer' },
+        auth: TEST_AUTH_KEY
+      });
+
+    });
+
+    it('Sends the correct request [with specified auth and idempotent key in options]', function() {
+
+      stripe.customers.create({ description: 'Some customer' }, { api_key: TEST_AUTH_KEY, idempotency_key: 'foo'});
+      expect(stripe.LAST_REQUEST).to.deep.equal({
+        method: 'POST',
+        url: '/v1/customers',
+        headers: {'Idempotency-Key': 'foo'},
+        data: { description: 'Some customer' },
+        auth: TEST_AUTH_KEY
+      });
+
+    });
+
+
+    it('Sends the correct request [with specified auth in options and no body]', function() {
+
+      stripe.customers.create({ api_key: TEST_AUTH_KEY });
+      expect(stripe.LAST_REQUEST).to.deep.equal({
+        method: 'POST',
+        url: '/v1/customers',
+        headers: {},
+        data: {},
+        auth: TEST_AUTH_KEY
+      });
+
+    });
+
 
   });
 
@@ -72,6 +142,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'POST',
         url: '/v1/customers/cus_2dkAb792h1mfa4',
+        headers: {},
         data: { description: 'Foo "baz"' }
       });
 
@@ -87,6 +158,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'DELETE',
         url: '/v1/customers/cus_2dkAb792h1mfa4',
+        headers: {},
         data: {}
       });
 
@@ -102,6 +174,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'GET',
         url: '/v1/customers',
+        headers: {},
         data: {}
       });
 
@@ -113,6 +186,7 @@ describe('Customers Resource', function() {
       expect(stripe.LAST_REQUEST).to.deep.equal({
         method: 'GET',
         url: '/v1/customers',
+        headers: {},
         data: {},
         auth: TEST_AUTH_KEY
       });
@@ -133,6 +207,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscription',
+          headers: {},
           data: { plan: 'fooPlan' }
         });
 
@@ -146,6 +221,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscription',
+          headers: {},
           data: { plan: 'fooPlan' },
           auth: TEST_AUTH_KEY
         });
@@ -162,6 +238,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/subscription',
+          headers: {},
           data: { }
         });
 
@@ -173,6 +250,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/subscription',
+          headers: {},
           data: { },
           auth: TEST_AUTH_KEY
         });
@@ -186,6 +264,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'DELETE',
             url: '/v1/customers/customerIdFoo321/subscription',
+            headers: {},
             data: { at_period_end: true }
           });
 
@@ -199,6 +278,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'DELETE',
             url: '/v1/customers/customerIdFoo321/subscription',
+            headers: {},
             data: { at_period_end: true },
             auth: TEST_AUTH_KEY
           });
@@ -220,6 +300,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/discount',
+          headers: {},
           data: {}
         });
 
@@ -235,6 +316,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456/discount',
+          headers: {},
           data: {}
         });
 
@@ -256,6 +338,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'POST',
             url: '/v1/customers/customerIdFoo321',
+            headers: {},
             data: {
               metadata: null
             }
@@ -288,12 +371,14 @@ describe('Customers Resource', function() {
               // First reset metadata:
               method: 'POST',
               url: '/v1/customers/customerIdFoo321',
+              headers: {},
               data: { metadata: null }
             },
             {
               // Then set new metadata:
               method: 'POST',
               url: '/v1/customers/customerIdFoo321',
+              headers: {},
               data: {
                 metadata: { foo: 123, baz: 456 }
               }
@@ -310,6 +395,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'POST',
             url: '/v1/customers/customerIdFoo321',
+            headers: {},
             data: {
               metadata: null
             },
@@ -319,6 +405,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'POST',
             url: '/v1/customers/customerIdFoo321',
+            headers: {},
             data: {
               metadata: { a: '1234' }
             },
@@ -328,6 +415,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'POST',
             url: '/v1/customers/customerIdFoo321',
+            headers: {},
             data: {
               metadata: { a: null }
             },
@@ -350,6 +438,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/cards/cardIdFoo456',
+          headers: {},
           data: {}
         });
 
@@ -361,6 +450,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/cards/cardIdFoo456',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
@@ -379,6 +469,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/cards',
+          headers: {},
           data: { number: '123456', exp_month: '12' }
         });
 
@@ -392,6 +483,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/cards',
+          headers: {},
           data: { number: '123456', exp_month: '12' },
           auth: TEST_AUTH_KEY
         });
@@ -410,6 +502,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/cards/cardIdFoo456',
+          headers: {},
           data: { name: 'Bob M. Baz' }
         });
 
@@ -425,6 +518,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/cards/cardIdFoo456',
+          headers: {},
           data: {}
         });
 
@@ -436,6 +530,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/cards/cardIdFoo456',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
@@ -452,6 +547,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/cards',
+          headers: {},
           data: {}
         });
 
@@ -463,6 +559,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/cards',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
@@ -483,6 +580,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: {}
         });
 
@@ -494,6 +592,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
@@ -512,6 +611,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscriptions',
+          headers: {},
           data: { plan: 'gold', quantity: '12' }
         });
 
@@ -525,6 +625,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscriptions',
+          headers: {},
           data: { plan: 'gold', quantity: '12' },
           auth: TEST_AUTH_KEY
         });
@@ -543,6 +644,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: { quantity: '2' }
         });
 
@@ -556,6 +658,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'POST',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: { quantity: '2' },
           auth: TEST_AUTH_KEY
         });
@@ -572,6 +675,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: {}
         });
 
@@ -583,6 +687,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'DELETE',
           url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
@@ -596,6 +701,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'DELETE',
             url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+            headers: {},
             data: { at_period_end: true }
           });
 
@@ -609,6 +715,7 @@ describe('Customers Resource', function() {
           expect(stripe.LAST_REQUEST).to.deep.equal({
             method: 'DELETE',
             url: '/v1/customers/customerIdFoo321/subscriptions/subscriptionIdFoo456',
+            headers: {},
             data: { at_period_end: true },
             auth: TEST_AUTH_KEY
           });
@@ -626,6 +733,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/subscriptions',
+          headers: {},
           data: {}
         });
 
@@ -637,6 +745,7 @@ describe('Customers Resource', function() {
         expect(stripe.LAST_REQUEST).to.deep.equal({
           method: 'GET',
           url: '/v1/customers/customerIdFoo321/subscriptions',
+          headers: {},
           data: {},
           auth: TEST_AUTH_KEY
         });
